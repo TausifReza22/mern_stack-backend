@@ -1,4 +1,5 @@
 import User from '../schema/userSchema.js';
+import jwt from "jsonwebtoken";
 
 // Create a new user
 const createUser = async (req, res) => {
@@ -11,6 +12,28 @@ const createUser = async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 };
+
+const loginUser = async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      const user = await User.findOne({ email });
+  
+      if (!user || user.password !== password) {
+        return res.status(400).json({ error: "Invalid email or password" });
+      }
+  
+      const token = jwt.sign({ user }, "jais@123", {
+        expiresIn: "1h",
+      });
+      res.cookie("token", token);
+  
+      res
+        .status(200)
+        .json({ message: "Login Successfully", userInfo: user, token });
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  };
 
 // Get all users
 const getAllUsers = async (req, res) => {
@@ -65,4 +88,4 @@ const deleteUserByEmail = async (req, res) => {
     }
 };
 
-export { createUser, getAllUsers, getUserByEmail, updateUserByEmail, deleteUserByEmail }
+export { createUser, loginUser, getAllUsers, getUserByEmail, updateUserByEmail, deleteUserByEmail }
