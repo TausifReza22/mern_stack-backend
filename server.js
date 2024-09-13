@@ -24,7 +24,7 @@ const corsOptions = {
     Credentials: true
 }
 
-app.use(cors(corsOptions()));
+app.use(cors(corsOptions));
 
 // Routes
 app.use('/', userRoutes);
