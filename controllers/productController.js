@@ -1,4 +1,4 @@
-import Product from '../Schema/productSchema.js';
+import Product from '../schema/productSchema.js';
 
 // Create a new product
 const createSingleProduct = async (req, res) => {
