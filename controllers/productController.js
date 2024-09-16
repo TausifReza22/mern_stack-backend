@@ -30,8 +30,9 @@ const createMultipleProducts = async (req, res) => {
 // Get all products
 const getProducts = async (req, res) => {
     try {
+        const productCount = await Product.countDocuments(); // Count the total number of products
         const products = await Product.find();
-        res.status(200).send(products);
+        res.status(200).json({ productCount, products});
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
